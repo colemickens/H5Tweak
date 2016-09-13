@@ -14,6 +14,7 @@ namespace H5Tweak
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
             Application.Run(new TweakUI());
         }
     }

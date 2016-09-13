@@ -9,43 +9,54 @@ namespace H5Tweak
 {
     public partial class TweakUI : Form
     {
+        int fov;
+        int fps;
 
         public TweakUI()
         {
+            this.fov = 78;
+            this.fps = 60;
             InitializeComponent();
+            this.tbFPS.Value = this.fps;
+            this.tbFOV.Value = this.fov;
+            this.lblFOV.Text = "FOV: " + this.tbFOV.Value.ToString();
+            this.lblFPS.Text = "FPS: " + this.tbFPS.Value.ToString();
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
-            lblFOV.Text = "FOV: " + tbFOV.Value.ToString();
-            Poker.SetFOV(tbFOV.Value);
+            this.lblFOV.Text = "FOV: " + this.tbFOV.Value.ToString();
+            this.fov = tbFOV.Value;
         }
 
         private void trackBar2_Scroll(object sender, EventArgs e)
         {
-            lblFPS.Text = "FPS: " + tbFPS.Value.ToString();
-            int fps = 1000000 / Convert.ToInt16(tbFPS.Value);
-            Poker.SetFPS(fps);
+            this.lblFPS.Text = "FPS: " + this.tbFPS.Value.ToString();
+            int fps = 1000000 / Convert.ToInt16(this.tbFPS.Value);
+
+            this.fps = fps;
         }
 
         private void TweakUI_Load(object sender, EventArgs e)
         {
-            Process[] process = Process.GetProcessesByName("halo5forge");
-            if (process.Length == 0)
-            {
-                MessageBox.Show("Unable to find running process. Terminating.", "H5Tweak", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Application.Exit();
-            }
-            else
-            {
-                int fov = Poker.GetFOV();
-                lblFOV.Text = "FOV: " + fov.ToString();
-                tbFOV.Value = fov;
+            Timer refreshTimer = new System.Windows.Forms.Timer();
 
-                int fps = Poker.GetFPS();
-                lblFPS.Text = "FPS: " + fps.ToString();
-                tbFPS.Value = fps;
+            refreshTimer.Interval = 1000;
+            refreshTimer.Tick += new EventHandler(this.Refresh);
+            refreshTimer.Start();
+        }
+
+        private void Refresh(Object myObject, EventArgs myEventArgs)
+        {
+            Poker poker;
+            if (!Poker.TryGetHaloPoker(out poker))
+            {
+                Console.WriteLine("No valid Halo process.");
+                return;
             }
+
+            poker.SetFOV(this.fov);
+            poker.SetFPS(this.fps);
         }
     }
 }
