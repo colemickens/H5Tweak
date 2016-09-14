@@ -2,9 +2,10 @@
 Removes default FPS cap and adds FOV slider for Halo 5: Forge.
 
 # Screenshot
-![Screenshot](http://i.imgur.com/GjjdacN.png)
+![Screenshot](http://i.imgur.com/OUBxvxY.png)
 
 # Download
+[Version 1.05](https://github.com/Snaacky/H5Tweak/releases/tag/1.05)
 [Version 1.0](https://github.com/Snaacky/H5Tweak/releases/tag/1.0)
 
 # YouTube video
